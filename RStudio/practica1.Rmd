@@ -1,0 +1,64 @@
+---
+title: "Practica1"
+author: "Bryam"
+date: "2024-09-23"
+output: html_document
+---
+
+### Cargamos las librerias necesarias
+
+Si se necesita instalar algunos librerias se debe ejecutar\> install.packages("tidyverse")
+
+```{r}
+library(tidyverse)
+library(datasauRus)
+library(dplyr)
+library(ggplot2)
+```
+
+mostramos un resumen
+
+```{r}
+datasaurus_dozen %>%
+  group_by(dataset) %>%
+  summarize(
+    mean_x      = mean(x),
+    mean_y      = mean(y),
+    std_dev_x   = sd(x),
+    std_dev_y   = sd(y),
+    corr_x_y    = cor(x,y)
+  )
+```
+
+Mostramos los graficos del modelo
+
+```{r}
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset))+
+  geom_point()+
+  theme_void()+
+  theme(legend.position = "none")+
+  facet_wrap(~dataset, ncol = 3)
+```
+### Trabajo en clase 
+Averiguar como hacer una regresion lineal 
+
+```{r}
+dfgrupo<-datasaurus_dozen %>%
+  filter(dataset== "away")
+dfgrupo
+
+```
+
+
+Ahora vamos a proceder a mostrar el grafico dado con su regresion lineal:
+
+```{r}
+away_data <- subset(datasaurus_dozen, dataset == "away")
+ggplot(away_data, aes(x = x, y = y)) +
+  geom_point(color = "red") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
+  theme_minimal() +
+  ggtitle("Gráfico del dataset 'away' con regresión lineal") +
+  theme(legend.position = "none")
+
+```
